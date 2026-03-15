@@ -10,7 +10,7 @@ import LoginScreen from './screens/LoginScreen';
 import './App.css';
 
 function AppShell() {
-  const { user, authLoading } = useApp();
+  const { user, authLoading, isAdmin, logout } = useApp();
   const metro = useMetronome();
   const [screen, setScreen] = useState('library');
   const [screenStack, setScreenStack] = useState([]);
@@ -58,7 +58,7 @@ function AppShell() {
     { id: 'library',   icon: '🎵', label: 'Biblioteca' },
     { id: 'playlists', icon: '🎬', label: 'Playlists' },
     { id: 'metronome', icon: '⏱', label: 'Metrônomo' },
-    { id: 'upload',    icon: '⬆', label: 'Upload' },
+    ...(isAdmin ? [{ id: 'upload', icon: '⬆', label: 'Upload' }] : []),
   ];
 
   const mainScreens = ['library', 'playlists', 'metronome', 'upload'];
@@ -78,6 +78,7 @@ function AppShell() {
         {screen === 'metronome' && (
           <span className="tb-tempo">{getTempoName(metro.bpm)}</span>
         )}
+        <button className="tb-logout" onClick={logout} title="Sair">⏻</button>
       </div>
 
       {/* Screens */}
@@ -89,7 +90,7 @@ function AppShell() {
         {screen === 'show'      && <ShowScreen       {...screenProps} />}
       </div>
 
-      {/* ── BARRA DE METRÔNOMO GLOBAL — sempre visível ── */}
+      {/* Barra de metrônomo global */}
       <MetroBar metro={metro} />
 
       {/* Navbar */}
@@ -114,7 +115,6 @@ function MetroBar({ metro }) {
 
   return (
     <div className="metro-bar">
-      {/* Beats visuais */}
       <div className="metro-bar-beats">
         {Array.from({ length: beats }, (_, i) => (
           <div
@@ -123,8 +123,6 @@ function MetroBar({ metro }) {
           />
         ))}
       </div>
-
-      {/* Controles */}
       <div className="metro-bar-controls">
         <button className="mb-adj" onClick={() => setBPM(bpm - 1)}>−</button>
         <div className="mb-bpm-wrap">
