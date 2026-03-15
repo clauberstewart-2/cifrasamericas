@@ -1,6 +1,6 @@
 import {
   collection, doc, addDoc, updateDoc, deleteDoc,
-  getDocs, getDoc, query, where, orderBy, serverTimestamp
+  getDocs, orderBy, query, serverTimestamp
 } from 'firebase/firestore';
 import {
   ref, uploadBytesResumable, getDownloadURL, deleteObject
@@ -8,11 +8,9 @@ import {
 import { db, storage } from './firebase';
 
 // ── MÚSICAS ──────────────────────────────────────────────
-
-export async function getSongs(userId) {
+export async function getSongs() {
   const q = query(
     collection(db, 'songs'),
-    where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
   const snap = await getDocs(q);
@@ -39,12 +37,10 @@ export async function deleteSong(songId) {
 }
 
 // ── UPLOAD DE PDF ────────────────────────────────────────
-
 export function uploadPDF(userId, file, onProgress) {
   return new Promise((resolve, reject) => {
     const storageRef = ref(storage, `pdfs/${userId}/${Date.now()}_${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -69,11 +65,9 @@ export async function deletePDF(storagePath) {
 }
 
 // ── PLAYLISTS ─────────────────────────────────────────────
-
-export async function getPlaylists(userId) {
+export async function getPlaylists() {
   const q = query(
     collection(db, 'playlists'),
-    where('userId', '==', userId),
     orderBy('createdAt', 'desc')
   );
   const snap = await getDocs(q);
