@@ -1,0 +1,15 @@
+{
+  "short_name": "Cifras",
+  "name": "Cifras Américas",
+  "description": "App de cifras, metrônomo e playlists para shows ao vivo",
+  "icons": [
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1a1035",
+  "background_color": "#1a1035",
+  "scope": "/"
+}
